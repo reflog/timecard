@@ -1,0 +1,140 @@
+@import "elements";
+body {
+  background-image: url("/static/img/fabric_plaid.png");
+}
+
+.shadowy {
+  .drop-shadow
+}
+
+.letterpress {
+  text-align: center;
+  text-shadow:0 2px 2px rgba(255,255,255,0.8);
+}
+
+.main-features {
+    margin-top: 10px;
+}
+
+.login-btn {
+    margin-left:2px;
+}
+
+.link:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+
+.actionIcon {
+    .transition(all,.1s);
+
+    margin-top: 4px;
+    float: right;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 20px;
+    color: #000000;
+    text-shadow: 0 1px 0 #ffffff;
+    .opacity(0.2);
+    &:hover, &:focus {
+      text-decoration: none;
+      cursor: pointer;
+      .opacity(0.4);
+      .scale(1.3);
+    }
+}
+
+[ng-cloak] {display: none}
+
+.fade-enter-setup , .fade-leave-setup {
+  .transition(.1s);
+}
+
+.fade-enter-setup {
+  .opacity(0);
+  &.fade-enter-start {
+    .opacity(1);
+  }
+}
+
+.fade-leave-setup {
+  .opacity(1);
+  &.fade-leave-start {
+    .opacity(0);
+  }
+}
+
+
+/*
+.fade-hide-setup, .fade-show-setup {
+  -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+  -moz-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+  -o-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+  .transition(all, cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+}
+
+.fade-hide-setup {
+  opacity:1;
+}
+.fade-hide-setup.fade-hide-start {
+  opacity:0;
+}
+
+.fade-show-setup {
+  opacity:0;
+}
+.fade-show-setup.fade-show-start {
+  opacity:1;
+}
+
+*/
+
+
+
+
+.layered-paper {
+    background: #eee;
+    box-shadow:
+        0 1px 1px rgba(0,0,0,0.15), /* The top layer shadow */
+        0 10px 0 -5px #eee, /* The second layer */
+        0 10px 1px -4px rgba(0,0,0,0.15), /* The second layer shadow */
+        0 20px 0 -10px #eee, /* The third layer */
+        0 20px 1px -9px rgba(0,0,0,0.15); /* The third layer shadow */
+}
+
+*:focus { outline: 0 none; }
+
+
+.table_container {
+  position: relative;
+  margin: 15px 0;
+  padding: 19px 39px 19px 14px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  .rounded(4px);
+
+  + .prettyprint {
+    margin-top: -20px;
+    padding-top: 15px;
+  }
+   > p:last-child {
+    margin-bottom: 0;
+  }
+  .table,
+  {
+    margin-bottom: 5px;
+  }
+}
+
+.table_container #title{
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: bold;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    color: #9da0a4;
+    .border-radius( 4px, 0, 4px, 0);
+  }
