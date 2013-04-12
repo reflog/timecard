@@ -2,9 +2,10 @@ app = angular.module('ProjectsApp', ['ngResource']).config ($interpolateProvider
     $interpolateProvider.startSymbol('[[')
     $interpolateProvider.endSymbol(']]')
 
+window.app = app
 
-app.controller "ProjectsController", ($scope,  $resource) ->
-  $scope.projects = objects: []
+app.controller "ProjectsController", ($scope,  $resource, appBusy) ->
+  $scope.projects = []
   $scope.currentProject = id: 0 , entries: []
   $scope.newProject = name: `undefined`, hourPrice :  `undefined`, archived: false
   $scope.newEntry = text: `undefined`, timeSpent :  `undefined`
@@ -27,20 +28,21 @@ app.controller "ProjectsController", ($scope,  $resource) ->
 
   $scope.getProjects = ->
     $scope.ProjectApi.list {}, {} , (result) ->
-      $scope.projects = result
-      $scope.selectProject ( $scope.projects.objects[0] if $scope.projects.objects.length>0 and  $scope.currentProject.id is 0 )
+      $scope.projects = result.objects
+      $scope.selectProject ( $scope.projects[0] if $scope.projects.length>0 and  $scope.currentProject.id is 0 )
+      appBusy.set false
 
   $scope.addProject = ->
     data = name:$scope.newProject.name, hourPrice: $scope.newProject.hourPrice, archived: false
     $scope.ProjectApi.add {}, data , (result) =>
       data.id = result.id
-      $scope.projects.objects.push(data)
+      $scope.projects.push(data)
       $scope.newProject = name: `undefined`, hourPrice :  `undefined`, archived: false
     $("#project_add_dialog").modal('hide')
 
   $scope.deleteProject = ->
     $scope.ProjectApi.delete project_id: $scope.projectToDelete.id, {} , ->
-      $scope.projects.objects.remove($scope.projectToDelete)
+      $scope.projects.remove($scope.projectToDelete)
     $("#project_delete_dialog").modal('hide')
 
 
@@ -76,5 +78,10 @@ app.controller "ProjectsController", ($scope,  $resource) ->
       $scope.addEntriesByMonth [result]
       $scope.newEntry = text: `undefined`, timeSpent :  `undefined`
 
+
+  $scope.$watch '$scope.currentProject.entries', (a,b,c) =>
+    console.log "entries changed",a,b,c
+
+  appBusy.set "Getting projects..."
   $scope.getProjects()
 

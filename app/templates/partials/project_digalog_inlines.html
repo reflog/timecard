@@ -5,16 +5,22 @@
   </div>
   <div class="modal-body">
 
- <form class="form-vertical">
-    <div class="control-group">
+ <form class="form-horizontal" name="entryForm" novalidate="">
+    <div class="control-group" ng-class="{error: entryForm.inputProjectName.$invalid}">
+      <label class="control-label" for="inputProjectName">Project name:</label>
       <div class="controls">
-        <label>Project name:</label>
-        <input type="text" class="input-medium" ng-model="newProject.name" placeholder="project name" autofocus>
-        <label>Hour price:</label>
+        <input type="text" name="inputProjectName" class="input-medium" ng-model="newProject.name" placeholder="Project name" autofocus required="">
+        <span ng-show="entryForm.inputProjectName.$error.required" class="help-block">Required</span>
+      </div>
+    </div>
+    <div class="control-group"  ng-class="{error: entryForm.inputProjectPrice.$invalid}">
+      <label class="control-label" for="inputProjectPrice">Hour price:</label>
+      <div class="controls">
             <div class="input-append">
-                <input type="text" class="input-medium" placeholder="Hourly rate" ng-model="newProject.hourPrice">
+                <input type="number"  name="inputProjectPrice" class="input-medium" placeholder="Hourly rate" ng-model="newProject.hourPrice" required="">
                 <span class="add-on">$</span>
             </div>
+            <span ng-show="entryForm.inputProjectPrice.$error.required" class="help-block">Required. Format: 10.5</span>
       </div>
     </div>
   </form>
@@ -22,7 +28,7 @@
   </div>
   <div class="modal-footer">
     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-    <button class="btn btn-success"  ng-click="addProject()">Save</button>
+    <button class="btn btn-success"  ng-click="addProject()" ng-disabled="entryForm.$invalid">Save</button>
   </div>
 </div>
 
@@ -41,3 +47,21 @@
   </div>
 </div>
 
+
+<script type="text/ng-template" id="componentTpl.html">
+    <span  ng-hide="editMode" ng-click="editMode=true;value=model">[[model]]</span>
+    <input type="text" ng-model="value" ng-show="editMode" ng-model-instant ng-enter="editMode=false" ng-change="model=value" autofocus/>
+</script>
+
+{% macro entry_edit_form() %}
+             <form class="well form-inline shadowy" name="entryAddForm" ng-submit="addEntry()" novalidate="">
+                <div class="control-group" ng-class="{error: entryAddForm.inputEntryName.$invalid||entryAddForm.inputEntryTime.$invalid}">
+                  <label class="control-label">New Entry</label>
+                  <div class="controls controls-row">
+                    <input type="text" class="input-xxlarge" ng-model="newEntry.text" name="inputEntryName" placeholder="Entry text" autofocus required="">
+                    <input type="number" class="input-small" ng-model="newEntry.timeSpent" name="inputEntryTime" placeholder="Time spent" required="">
+                    <button type="submit" class="btn btn-success"  ng-disabled="entryAddForm.$invalid">+</button>
+                  </div>
+                </div>
+              </form>
+{% endmacro %}

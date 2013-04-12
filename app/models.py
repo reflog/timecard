@@ -74,7 +74,6 @@ class User(db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     role = db.Column(db.SmallInteger, default=ROLE_USER)
 
-
     @staticmethod
     def make_valid_nickname(nickname):
         return re.sub('[^a-zA-Z0-9_\.]', '', nickname)
@@ -104,8 +103,8 @@ class User(db.Model):
     def get_id(self):
         return unicode(self.id)
 
-    def avatar(self, size):
-        return 'http://www.gravatar.com/avatar/' + md5(self.email).hexdigest() + '?d=mm&s=' + str(size)
+    def avatar(self, w, h):
+        return 'http://www.gravatar.com/avatar/%s?d=mm&s=%dx%d' % (md5(self.email).hexdigest(), w, h)
 
     def __repr__(self):  # pragma: no cover
         return '<User %r>' % self.nickname

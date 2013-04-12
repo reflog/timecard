@@ -1,13 +1,12 @@
 {% extends "base.html" %}
 
 {%block extra_css %}
-<style type="text/css">
-</style>
 {% endblock %}
 {%block extra_js%}
     <script type="text/javascript" src="/static/js/angular.js"></script>
     <script type="text/javascript" src="/static/js/angular-resource.js"></script>
     <script type="text/javascript" src="/static/js/projects.js"></script>
+    <script type="text/javascript" src="/static/js/directives.js"></script>
 {% endblock %}
 
 
@@ -15,6 +14,7 @@
 <div ng-app='ProjectsApp' ng-controller="ProjectsController" ng-cloak>
 
 {% include 'partials/project_digalog_inlines.html' %}
+{% from 'partials/project_digalog_inlines.html' import entry_edit_form %}
 
 
 {% macro project_list(title,archived) %}
@@ -25,7 +25,7 @@
         {% endif %}
     </p>
     <ul class="nav nav-list projectsList" >
-        <li ng-repeat="p in projects.objects|filter: {archived: {{archived}}}"
+        <li ng-repeat="p in projects|filter: {archived: {{archived}}}"
             ng-class="{active:p.id == currentProject.id}"
             ng-animate="'fade'">
                 <div>
@@ -48,7 +48,7 @@
         {{project_list("Archived Projects",'true')}}
     </div>
     <div class="span9" data-spy="scroll" data-target=".projectsList">
-        <section ng-show='projects.objects.length == 0'>
+        <section ng-show='projects.length == 0'>
             <div class="page-header">
                 <h1>Nothing yet! Add a project...</h1>
             </div>
@@ -57,16 +57,7 @@
             <div class="page-header">
                 <h1 class="letterpress" ng-bind="'Project: ' + currentProject.name"></h1>
             </div>
-             <form class="well form-inline shadowy"  ng-submit="addEntry()">
-                <div class="control-group">
-                  <label class="control-label">New Entry</label>
-                  <div class="controls controls-row">
-                    <input type="text" class="input-xxlarge" ng-model="newEntry.text" placeholder="Entry text" autofocus>
-                    <input type="text" class="input-small" ng-model="newEntry.timeSpent" placeholder="Time spent">
-                    <button type="submit" class="btn btn-success">+</button>
-                  </div>
-                </div>
-              </form>
+            {{ entry_edit_form() }}
             </section>
             <section class='layered-paper shadowy' >
                 <h2 class="letterpress" >Entries</h2>
@@ -83,8 +74,8 @@
                     <tbody>
                         <tr ng-repeat="e in entries|orderBy:'-createdAt'" ng-animate="'fade'">
                             <td ng-bind="e.createdAt"></td>
-                            <td ng-bind="e.text"></td>
-                            <td ng-bind="e.timeSpent"></td>
+                            <td><inline-edit model="e.text"></inline-edit></td>
+                            <td><inline-edit model="e.timeSpent"></inline-edit></td>
                         </tr>
                     </tbody>
                 </table>

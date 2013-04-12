@@ -6,3 +6,8 @@ app/static/css/style.css
 app/static/js/projects.js
 app/static/js/projects.map
 timecard.db
+.idea/
+associations/
+nonces/
+app/static/js/directives.js
+app/static/js/directives.map
