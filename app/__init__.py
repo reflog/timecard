@@ -16,6 +16,7 @@ lm.init_app(app)
 lm.login_view = 'login'
 lm.login_message = 'Please log in to access this page.'
 oid = OpenID(app, ROOT)
+app.jinja_env.line_statement_prefix = '%'
 
 
 #from flask.ext.debugtoolbar import DebugToolbarExtension

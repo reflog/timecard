@@ -35,7 +35,7 @@ def api_project_list():
     resp.status_code = 200
     return resp
 
-@app.route('/api/project/<int:projectId>', methods=['PATCH', 'DELETE'])
+@app.route('/api/project/<int:projectId>', methods=['POST', 'DELETE'])
 @login_required
 def api_project(projectId):
     ret = {}
@@ -45,7 +45,10 @@ def api_project(projectId):
 
     if request.method == 'DELETE':
         db.session.delete(p)
-        db.session.commit()
+    elif request.method == 'POST':
+        p.name = request.json['name']
+        p.archived = request.json['archived']
+    db.session.commit()
     resp = jsonify(ret)
     resp.status_code = 200
     return resp
@@ -70,19 +73,22 @@ def api_entry(projectId):
     return resp
 
 
-@app.route('/api/project/<int:projectId>/entry/<int:entryId>', methods=['PATCH', 'DELETE'])
+@app.route('/api/project/<int:projectId>/entry/<int:entryId>', methods=['POST', 'DELETE'])
 @login_required
 def api_entry_edit(projectId, entryId):
     ret = {}
     p = Project.query.filter_by(user=current_user, id=projectId).first()
     if not p:
         return not_found("No such project!")
-    if request.method == 'DELETE':
-        e = Entry.query.filter_by(project=p, id=entryId).first()
-        if not e:
-            return not_found("No such entry!")
+    e = Entry.query.filter_by(project=p, id=entryId).first()
+    if not e:
+        return not_found("No such entry!")
+    if request.method == 'POST':
+        e.text = request.json['text']
+        e.timeSpent = request.json['timeSpent']
+    elif request.method == 'DELETE':
         db.session.delete(e)
-        db.session.commit()
+    db.session.commit()
     resp = jsonify(ret)
     resp.status_code = 200
     return resp

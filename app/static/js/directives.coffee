@@ -3,6 +3,19 @@ window.app.directive "ngEnter", ->
     elm.bind "keypress", (e) ->
       if e.charCode is 13
         scope.$apply attrs.ngEnter
+        scope.$root.$broadcast "entryChanged", scope.$parent
+
+
+window.app.directive "showtab", ->
+  link: (scope, element) ->
+    element.click (e) ->
+      e.preventDefault()
+      $(element).tab "show"
+
+window.app.directive "tabs", ->
+  link: (scope, element) ->
+    element.tab('show')
+
 
 window.app.directive "inlineEdit", ->
   restrict: "E"
